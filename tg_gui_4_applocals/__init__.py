@@ -26,13 +26,14 @@ _control_loop = _touchcontrol.loop
 
 _debug = False
 
-def _pickup_widget(inst, _debug=False):
+def _pickup_widget(inst, debug=False):
     if isinstance(inst, (container)):
-        print('picking up', inst)
-        if _debug:
-            _pygame_display .roundrect(inst, inst._phys_x ,inst._phys_y, inst._phys_width, inst._phys_height, color.purple, radius=0)
+        #
+        if debug:
+            print('picking up', inst, 'via _pickup_widget')
+            _pygame_display.roundrect(inst, inst._phys_x ,inst._phys_y, inst._phys_width, inst._phys_height, color.purple, radius=0)
         else:
-            _pygame_display .roundrect(inst, inst._phys_x ,inst._phys_y, inst._phys_width, inst._phys_height, color.black, radius=0)
+            _pygame_display.roundrect(inst, inst._phys_x ,inst._phys_y, inst._phys_width, inst._phys_height, color.black, radius=0)
 
 _tg4.init(
             unit_base=150,
@@ -41,15 +42,15 @@ _tg4.init(
             font_size=1,
         )
 
-_tg4_std.init(   rect=_pygame_display .roundrect,
-                text=_pygame_display .placetext,
-                centertext=_pygame_display .centertext,
-                char_height=int(_pygame_display .char_height*1.25),
-                char_width=int(_pygame_display .char_width*1.25),
+_tg4_std.init(   rect=_pygame_display.roundrect,
+                text=_pygame_display.placetext,
+                centertext=_pygame_display.centertext,
+                char_height=int(_pygame_display.char_height*1.25),
+                char_width=int(_pygame_display.char_width*1.25),
             )
 
 
-#pygame_display_update = _pygame_display .update
+#pygame_display_update = _pygame_display.update
 #pygame_event_get = _pygame.event.get
 #pygame_mouse_get_pressed = _pygame.mouse.get_pressed
 #pygame_mouse_get_pos = _pygame.mouse.get_pos
@@ -65,19 +66,19 @@ def _input_loop(root):
     while should_loop:
 
         for event in _pygame.event.get():
-            if event.type == _pygame.KEYUP:
+            '''if event.type == _pygame.KEYUP:
                 if event.key == _locals.K_RIGHT:
                     nextables = action_types['nextview']
                     nextables.sort(key=by_id)
                     if len(nextables):
                         nextables[-1].nextview()
-                elif event.key == K_LEFT:
+                elif event.key == _locals.K_LEFT:
                     prevables = action_types['priorview']
                     prevables.sort(key=by_id)
                     if len(prevables):
-                        prevables[-1].priorview()
+                        prevables[-1].priorview()'''
 
-            elif event.type == _locals.QUIT:
+            if event.type == _locals.QUIT:
                 should_loop = False
 
         pointer_state = _pygame.mouse.get_pressed()[0]
@@ -90,10 +91,10 @@ def _input_loop(root):
         _pygame_display.update()
 
 
-def appwindow(width, height):
+def appwindow(width, height, x=0, y=0):
     assert isinstance(width, int), f"argument 'width' must be of type 'int', got type '{type(width).__name__}'"
     assert isinstance(height, int), f"argument 'height' must be of type 'int', got type '{type(height).__name__}'"
-    _pygame_display.init(width, height)
+    _pygame_display.init(width, height, x=x, y=y)
     root_constructor= _hostviews.systemroot(width, height, x=0, y=0, place=True)
     def app_runner(cls):
         root = root_constructor(cls)
